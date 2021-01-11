@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<style>
+    body{
+        background: linear-gradient(135deg, white, cyan, blue);
+    }
+    h1{
+        text-align: center;
+    }
+    #container{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 20px;
+        width: 70vw;
+        height: 40vh;
+        position: relative;
+        left: 15%;
+    }
+    #user_wins{
+        border: solid black 1px;
+        background: rgba(128, 128, 128, 0.24);
+        text-align: center;
+              
+    }
+    #comp_wins{
+        border: solid black 1px;
+        background: rgba(128, 128, 128, 0.192);
+        text-align: center;
+        
+    }
+    #buttons{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 40px;
+        width: 40vw;
+        position: relative;
+        left: 25%;
+        margin: 30px;
+    }
+    #resultp{
+        width: 10vw;
+        position: relative;
+        left: 40%;
+        height: 10vh;
+    }
+</style>
+    <header>
+        <title>Rock Paper or Scissors</title>
+    </header>
+    <body>
+        <head>
+            <h1>Rock Paper and Scissors</h1>
+        </head>
+        <div id="container">
+            <input type="text" id="user_wins" value="User Wins: 0">
+            <input type="text" id="comp_wins" value="Comp Wins: 0">
+        </div>
+        <div id="buttons">
+            <input type="button" id="end-game" value="End Game">
+            <input type="button" id="new-game" value="New Game">
+        </div>
+        <div id="resultp">
+            <p id="result"></p>
+        </div>
+
+    </body>
+    <script>
+        
+        let userWinNum=0;
+        let compWinNum=0;
+        let arrChoices=["ROCK", "PAPER", "SCISSORS"];
+        play();
+        function play(){
+            for (let i=0; i<5; i++){
+                let userChoice=(prompt("which one do you choose: rock or paper or scissors")).toUpperCase();
+                let compChoice=arrChoices[Math.floor(Math.random()*3)];
+                alert(compChoice);
+                alert(userChoice);
+                whoWins(userChoice, compChoice);
+            }
+        }
+
+        function whoWins(userChoice, compChoice){
+            if (compChoice==userChoice){
+                draw();
+            }else if ((compChoice=="ROCK" && userChoice=="SCISSORS") || (compChoice=="SCISSORS" && userChoice=="PAPER") || (compChoice=="PAPER" && userChoice=="ROCK")){
+                compWins();
+            } else {
+                userWins();
+            }
+        }
+        function draw(){
+            let para= document.getElementById("result");
+            para.textContent="It is a Draw";
+            alert("draw");
+        }
+        function userWins(){
+            userWinNum++;
+            let para=document.getElementById("result");
+            para.textContent="User wins, well done";
+            let score=document.getElementById("user_wins");
+            score.value=userWinNum;
+            alert("user wins");
+        }
+        function compWins(){
+            compWinNum++;
+            let para=document.getElementById("result");
+            para.textContent="You lose, and the Skynet Wins";
+            let score=document.getElementById("comp_wins");
+            score.value=compWinNum;
+            alert("compwins");
+        }
+        
+    </script>
+</html>
+
