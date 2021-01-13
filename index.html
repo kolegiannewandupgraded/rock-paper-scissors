@@ -56,8 +56,8 @@
             <input type="text" id="comp_wins" value="Comp Wins: 0">
         </div>
         <div id="buttons">
-            <input type="button" id="end-game" value="End Game">
-            <input type="button" id="new-game" value="New Game">
+            <button id="end-game" value="End Game">End Game </button>
+            <button id="new-game" value="New Game">Start Game</button>
         </div>
         <div id="resultp">
             <p id="result"></p>
@@ -69,13 +69,20 @@
         let userWinNum=0;
         let compWinNum=0;
         let arrChoices=["ROCK", "PAPER", "SCISSORS"];
-        play();
+        let startButton=document.getElementById("new-game");
+        startButton.addEventListener('click', function() {
+            play();
+        });
+        let endButton=document.getElementById("end-game");
+        endButton.addEventListener('click', function(){
+            reset();
+        });
+
         function play(){
             for (let i=0; i<5; i++){
                 let userChoice=(prompt("which one do you choose: rock or paper or scissors")).toUpperCase();
                 let compChoice=arrChoices[Math.floor(Math.random()*3)];
-                alert(compChoice);
-                alert(userChoice);
+                
                 whoWins(userChoice, compChoice);
             }
         }
@@ -109,6 +116,14 @@
             let score=document.getElementById("comp_wins");
             score.value=compWinNum;
             alert("compwins");
+        }
+        function reset(){
+            compWinNum=0;
+            userWinNum=0;
+            let score=document.getElementById("user_wins");
+            score.value=userWinNum;
+            let compScore=document.getElementById("comp_wins");
+            compScore.value=compWinNum;
         }
         
     </script>
