@@ -2,7 +2,7 @@
 <html>
 <style>
     body{
-        background: linear-gradient(135deg, white, cyan, blue);
+        background: linear-gradient(135deg, white, blue);
     }
     h1{
         text-align: center;
@@ -18,14 +18,16 @@
     }
     #user_wins{
         border: solid black 1px;
-        background: rgba(128, 128, 128, 0.24);
+        background: rgb(255, 255, 255);
         text-align: center;
+        font-size: large;
               
     }
     #comp_wins{
         border: solid black 1px;
-        background: rgba(128, 128, 128, 0.192);
+        background: rgb(248, 245, 245);
         text-align: center;
+        font-size: large;
         
     }
     #buttons{
@@ -43,6 +45,32 @@
         left: 40%;
         height: 10vh;
     }
+    #choices{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        position: relative;
+        left: 30%;
+        width: 40vw;
+    }
+    .choice{
+        width: 80px;
+        height: 50px;
+    }
+    #result{
+        animation-name: win;
+        animation-duration: 2s;
+        position: relative;
+        left:40%;
+        text-align: center;
+        font-size: large;
+        
+    }
+    @keyframes win{
+        25% {left: 100px; font-size:large; top: 25%;}
+        50% {left: 50%; font-size: large; top: 40%;}
+        75% {left: 75%; font-size: small; top: 25%;}
+        100% {left: 250%;}
+    }
 </style>
     <header>
         <title>Rock Paper or Scissors</title>
@@ -59,73 +87,81 @@
             <button id="end-game" value="End Game">End Game </button>
             <button id="new-game" value="New Game">Start Game</button>
         </div>
+        <div id="choices">
+            <a href="#" ><img class="choice" id="Paper" src="https://www.nintendo.com.au/modules/prodcatalogue/templates/custom/paper_mario_the_origami_king/img/NSwitch_PaperMarioTheOrigamiKing_Orange_Paper_BG.jpg"> </a>
+            <a href="#" ><img class="choice" id="Scissors" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Scissors_icon_black.svg/100px-Scissors_icon_black.svg.png"></a>
+            <a href="#" ><img class="choice" id="Rock" src="https://geology.com/rocks/pictures/amphibolite-2.jpg" alt="rock pic"></a>
+        </div>
         <div id="resultp">
-            <p id="result"></p>
+            <p id="result">Result</p>
         </div>
 
     </body>
     <script>
+        let newGame=document.querySelector("#new-game");
+        let endGame=document.querySelector("#end-game");
+        let userWins=0;
+        let compWins=0;
+        let userChoice="";
+        let compChoice="";
+        newGame.addEventListener("click", ()=>play());
+        endGame.addEventListener("click", ()=>reset()); 
         
-        let userWinNum=0;
-        let compWinNum=0;
-        let arrChoices=["ROCK", "PAPER", "SCISSORS"];
-        let startButton=document.getElementById("new-game");
-        startButton.addEventListener('click', function() {
-            play();
+        let choices=document.querySelectorAll(".choice");
+        let choiceArr=Array.from(choices);
+        choiceArr.forEach((item) =>{
+            item.addEventListener("click", ()=> {
+                console.log(item.id);
+                userChoice=item.id;
+                play();
+                return item.id;
         });
-        let endButton=document.getElementById("end-game");
-        endButton.addEventListener('click', function(){
-            reset();
-        });
+    });        
 
-        function play(){
-            for (let i=0; i<5; i++){
-                let userChoice=(prompt("which one do you choose: rock or paper or scissors")).toUpperCase();
-                let compChoice=arrChoices[Math.floor(Math.random()*3)];
-                
-                whoWins(userChoice, compChoice);
-            }
+    function play(){
+        compChoice=computerChoice();
+        whoWins(userChoice, compChoice);
+    }
+    function whoWins(us, comp){
+        if (us==comp) return alert("draw");
+        if ((us=="Rock" && comp=="Scissors") || (us=="Paper" && comp=="Rock") || (us=="Scissors" && comp=="Paper")){
+            userWinss();
+        }else {
+            compWinss();
         }
+    }
 
-        function whoWins(userChoice, compChoice){
-            if (compChoice==userChoice){
-                draw();
-            }else if ((compChoice=="ROCK" && userChoice=="SCISSORS") || (compChoice=="SCISSORS" && userChoice=="PAPER") || (compChoice=="PAPER" && userChoice=="ROCK")){
-                compWins();
-            } else {
-                userWins();
-            }
-        }
-        function draw(){
-            let para= document.getElementById("result");
-            para.textContent="It is a Draw";
-            alert("draw");
-        }
-        function userWins(){
-            userWinNum++;
-            let para=document.getElementById("result");
-            para.textContent="User wins, well done";
-            let score=document.getElementById("user_wins");
-            score.value=userWinNum;
-            alert("user wins");
-        }
-        function compWins(){
-            compWinNum++;
-            let para=document.getElementById("result");
-            para.textContent="You lose, and the Skynet Wins";
-            let score=document.getElementById("comp_wins");
-            score.value=compWinNum;
-            alert("compwins");
-        }
-        function reset(){
-            compWinNum=0;
-            userWinNum=0;
-            let score=document.getElementById("user_wins");
-            score.value=userWinNum;
-            let compScore=document.getElementById("comp_wins");
-            compScore.value=compWinNum;
-        }
-        
+    function computerChoice(){
+        let choices=["Rock", "Scissors", "Paper"];
+        compChoice=choices[Math.floor(Math.random()*3)];
+        return compChoice;
+    }
+    
+    
+    function userWinss(){
+        userWins++;
+        let count=document.getElementById("user_wins");
+        count.value=`User Wins: ${userWins}`;
+        let para=document.getElementById("result");
+        para.textContent="User Wins";
+    }
+    function compWinss(){
+        compWins++;
+        let count=document.getElementById("comp_wins");
+        count.value=`Comp Wins: ${compWins}`;
+        let para=document.getElementById("result");
+        para.textContent="Comp Wins";
+    }
+    function reset(){
+        userWins=0;
+        compWins=0;
+        let count=document.getElementById("user_wins");
+        count.value=`User Wins: ${userWins}`;
+        let count1=document.getElementById("comp_wins");
+        count1.value=`Comp Wins: ${compWins}`;
+
+    }
+           
     </script>
 </html>
 
